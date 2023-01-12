@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 
 namespace RestAppAPI.Data
 {
-    public class Context : DbContext
+    public class Context : DbContext, IContext
     {
 
         public DbSet<Restaurant> Restaurants { get; set; } = null!;
