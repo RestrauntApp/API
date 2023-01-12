@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestAppAPI.Models;
+using System.Collections;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
@@ -49,8 +51,11 @@ namespace RestAppAPI.Data
 
         public async Task<User?> GetUserByEmailAndPasswordAsync(string email, string password)
         {
+            
+
             email.Trim();
             password.Trim();
+            password = EncryptPwd(password);
             return await Users.FirstOrDefaultAsync(u => u.email == email && u.password == password);
         }
 
@@ -88,6 +93,43 @@ namespace RestAppAPI.Data
         public async Task<Review?> GetReviewByIdAsync(int id)
         {
             return await Reviews.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Review>> GetReviewsAsync()
+        {
+            return await Reviews.ToListAsync<Review>();
+        }
+
+        public async Task<IEnumerable<Review>> GetReviewsByResIdAsync(int restId)
+        {
+            var allReviews = await GetReviewsAsync();
+            List<Review> reviews = new List<Review>();
+
+            foreach(Review review in allReviews)
+            {
+                if (review.restId == restId)
+                {
+                    reviews.Add(review);
+                }
+            }
+
+            return reviews;
+
+        }
+
+        public async Task<double> GetRestAvgReviewAsync(int restId)
+        {
+            var restReviews = await GetReviewsByResIdAsync(restId);
+            int revSum = 0;
+            int revTotal = 0;
+
+            foreach(Review review in restReviews)
+            {
+                revSum += review.reviewNum;
+                revTotal++;
+            }
+
+            return revSum / revTotal;   
         }
 
 
