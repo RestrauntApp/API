@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestAppAPI.Models;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 namespace RestAppAPI.Data
 {
@@ -16,7 +18,7 @@ namespace RestAppAPI.Data
 
 
 
-        /************User Table*****************************/
+  /*********************************************User Table*****************************************************************/
 
         public void DenoteUserModified (User user)
         {
@@ -33,23 +35,79 @@ namespace RestAppAPI.Data
                 return false;
             }
 
+            user.password = EncryptPwd(user.password);
+
             Users.Add(user);
             SaveChanges();
             return true;
         }
 
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await Users.FindAsync(id);
+        }
+
+        public async Task<User?> GetUserByEmailAndPasswordAsync(string email, string password)
+        {
+            email.Trim();
+            password.Trim();
+            return await Users.FirstOrDefaultAsync(u => u.email == email && u.password == password);
+        }
 
 
-        /************Restaurant Table*****************************/
+
+
+
+ /*******************************************Restaurant Table**************************************************************/
+      
         public void DenoteRestaurantModified(Restaurant restraunt)
         {
             Entry(restraunt).State = EntityState.Modified;
         }
 
-        /************Review Table*****************************/
+
+        public async Task<Restaurant> GetRestaurantByIdAsync (int id)
+        {
+            return await Restaurants.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync()
+        {
+            return await Restaurants.ToListAsync<Restaurant>();
+        }
+
+
+
+ /**************************************** *********Review Table************************************************************/
+       
         public void DenoteReviewModified (Review review)
         {
             Entry (review).State = EntityState.Modified;
+        }
+
+        public async Task<Review?> GetReviewByIdAsync(int id)
+        {
+            return await Reviews.FindAsync(id);
+        }
+
+
+
+
+ /*******************************************Helper Methods***************************************************************/
+
+        private string EncryptPwd(string password)
+        {
+            SHA256 myHash = SHA256.Create();
+            string salt = "restaurant";
+            string combined = salt + password;
+
+            byte[] bytes = new byte[combined.Length * sizeof(char)];
+            System.Buffer.BlockCopy(combined.ToCharArray(), 0, bytes, 0, bytes.Length);
+
+            byte[] hashvalue = myHash.ComputeHash(bytes);
+            string hash = BitConverter.ToString(hashvalue).Replace("-", "");
+
+            return hash;
         }
     }
 }
