@@ -1,11 +1,35 @@
-var builder = WebApplication.CreateBuilder(args);
+using RestAppAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
-// Add services to the container.
+
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+var connString = builder.Configuration["ConnectionStrings:RestDb"];
+
+builder.Services.AddDbContext<Context>(opt => opt.UseSqlServer(connString));
+
+builder.Services.AddScoped<IContext>(provider => provider.GetService<Context>());
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:4200 , http://localhost:4200")
+                   .AllowAnyMethod()
+                   .AllowCredentials()
+                   .AllowAnyHeader();
+        });
+});
+
+
 
 var app = builder.Build();
 
@@ -16,6 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
