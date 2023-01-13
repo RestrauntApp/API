@@ -1,10 +1,20 @@
-﻿namespace RestAppAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RestAppAPI.Models
 {
     public class Restaurant
     {
+        [Key, Column("RestId")]
         public int id { get; set; }
+
+        [Column("RestName")]
         public string name { get; set; }
+
+        [Column("RestType")]
         public string type { get; set; }
+
+        [Column("RestCulture")]
         public string culture { get; set; }
 
         public Restaurant() { }

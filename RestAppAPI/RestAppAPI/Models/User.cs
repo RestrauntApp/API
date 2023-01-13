@@ -1,10 +1,20 @@
-﻿namespace RestAppAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RestAppAPI.Models
 {
     public class User
     {
+        [Key, Column("UserId")]
         public int id { get; set; }
+
+        [Column("UserName")]
         public string name { get; set; }
-        public string email { get; set; }  
+
+        [Column("UserEmail")]
+        public string email { get; set; }
+
+        [Column("UserPass")]   
         public string password { get; set; }
 
         public User() { }
