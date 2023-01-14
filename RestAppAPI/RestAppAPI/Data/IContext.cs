@@ -9,6 +9,7 @@ namespace RestAppAPI.Data
         public Task<bool> CreateNewUser(User user);
         public Task<User?> GetUserByIdAsync(int id);
         public Task<User?> GetUserByEmailAndPasswordAsync(string email, string password);
+        public Task<User?> GetUserByEmailAsync(string email);
 
         //Restaurant Table
         public void DenoteRestaurantModified(Restaurant restraunt);

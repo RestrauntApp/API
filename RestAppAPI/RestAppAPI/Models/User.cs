@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RestAppAPI.Models
 {
+    [Table("Users", Schema ="RestApp")]
     public class User
     {
         [Key, Column("UserId")]

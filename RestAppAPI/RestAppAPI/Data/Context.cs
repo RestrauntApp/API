@@ -59,6 +59,14 @@ namespace RestAppAPI.Data
             return await Users.FirstOrDefaultAsync(u => u.email == email && u.password == password);
         }
 
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            email.Trim();
+
+            return await Users.FirstOrDefaultAsync(u => u.email == email);
+
+        }
+
 
 
 

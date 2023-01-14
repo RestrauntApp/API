@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RestAppAPI.Models
 {
+    [Table("Reviews", Schema = "RestApp")]
     public class Review
     {
         [Key, Column("RevId")]
@@ -18,7 +19,7 @@ namespace RestAppAPI.Models
         public int reviewNum { get; set; }
 
         [Column("RevDate")]
-        public DateOnly reviewDate { get; set; }
+        public DateTime reviewDate { get; set; }
 
         public Review() { }
     }
