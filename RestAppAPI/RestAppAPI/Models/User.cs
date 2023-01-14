@@ -18,6 +18,11 @@ namespace RestAppAPI.Models
         [Column("UserPass")]   
         public string password { get; set; }
 
+
+        //noncolumn data for generating reviews
+        public int revNum { get; set; } = 0;
+        public Restaurant? Restaurant { get; set; } = null;
+
         public User() { }
 
         public User (string email,string password)

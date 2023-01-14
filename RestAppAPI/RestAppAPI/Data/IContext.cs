@@ -22,6 +22,7 @@ namespace RestAppAPI.Data
         public Task<IEnumerable<Review>> GetReviewsAsync();
         public Task<IEnumerable<Review>> GetReviewsByResIdAsync(int restId);
         public Task<double> GetRestAvgReviewAsync(int restId);
+        public Task<Review> NewReviewAsync(User u);
 
     }
 }

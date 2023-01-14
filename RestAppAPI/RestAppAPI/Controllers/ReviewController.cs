@@ -50,6 +50,14 @@ namespace RestAppAPI.Controllers
             return r;
         }
 
+        [HttpPost("/new")]
+        public async Task<ActionResult<Review>>NewUserReview(User user)
+        {
+            var r = await context.NewReviewAsync(user);
+
+            return r;
+        }
+
 
     }
 }

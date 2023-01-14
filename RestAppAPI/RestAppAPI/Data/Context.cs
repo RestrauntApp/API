@@ -40,7 +40,7 @@ namespace RestAppAPI.Data
             user.password = EncryptPwd(user.password);
 
             Users.Add(user);
-            SaveChanges();
+           SaveChanges();
             return true;
         }
 
@@ -108,6 +108,8 @@ namespace RestAppAPI.Data
             return await Reviews.ToListAsync<Review>();
         }
 
+       
+
         public async Task<IEnumerable<Review>> GetReviewsByResIdAsync(int restId)
         {
             var allReviews = await GetReviewsAsync();
@@ -140,6 +142,18 @@ namespace RestAppAPI.Data
             return revSum / revTotal;   
         }
 
+        public async Task<Review>NewReviewAsync(User u)
+        {
+            Review review = new Review();
+            review.userId = u.id;
+            review.restId = u.Restaurant.id;
+            review.reviewNum = u.revNum;
+            review.reviewDate = System.DateTime.Now;
+
+            Reviews.Add(review);
+            SaveChanges();
+            return review;
+        }
 
 
 
